@@ -4,34 +4,33 @@ import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import TrackballControls from './ref/TrackballControls';
 
+let cubeRotation = new THREE.Euler();
 class Simple extends React.Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      cameraPosition: new THREE.Vector3(0, 0, 30),
+      cameraPosition: new THREE.Vector3(40, 20, 10),
       width: window.innerWidth,
       height: window.innerHeight,
-      cubeRotation: new THREE.Euler(),
       pause: false,
       fov: 75
     };
 
     this._onAnimate = () => {
       this.controls.update();
-      if (!this.state.pause)
-        this.setState({
-          cubeRotation: new THREE.Euler(
-            this.state.cubeRotation.x + 0.01,
-            this.state.cubeRotation.y + 0.01,
-            this.state.cubeRotation.z + 0.01
-          ),
-        });
+      if (!this.state.pause) {
+        cubeRotation = new THREE.Euler(
+          cubeRotation.x + 0.1,
+          cubeRotation.y + 0.1,
+          0
+        )
+        // cubeRotation.onChange(new OneForm().updateRotation(cubeRotation))
+      }
     };
   }
 
   componentDidMount() {
-
     const controls = new TrackballControls(this.refs.camera,
       ReactDOM.findDOMNode(this.refs.react3));
 
@@ -71,7 +70,7 @@ class Simple extends React.Component {
   }
 
   render() {
-    const { width, height, cameraPosition, cubeRotation, fov } = this.state
+    const { width, height, cameraPosition, fov } = this.state
     return (
       <React3
         ref="react3"
@@ -88,7 +87,7 @@ class Simple extends React.Component {
             near={0.1}
             far={1000}
             position={cameraPosition} />
-          <GeometryForms rotation={cubeRotation} qnty={5} />
+          <GeometryForms qnty={5} />
         </scene>
       </React3>
     );
@@ -112,13 +111,13 @@ class GeometryForms extends React.Component {
 
   createForms() {
     const elements = []
-    const { qnty, rotation } = this.props
+    const { qnty } = this.props
     for (let index = 0; index < qnty; index++) {
       const posX = Math.random()
       const posY = Math.random()
       const posZ = Math.random()
       const position = new THREE.Vector3(posX * 20, posY * 20, posZ * 10)
-      elements.push(<OneForm rotation={rotation} position={position} />)
+      elements.push(<OneForm position={position} />)
     }
     this.setState({
       elements: elements
@@ -141,11 +140,21 @@ class GeometryForms extends React.Component {
 }
 
 class OneForm extends React.Component {
+  state = {
+    rotation: cubeRotation
+  }
+
+  updateRotation(rotation) {
+    this.setState({ rotation })
+  }
+
+
   render() {
-    const { position, rotation } = this.props;
+    const { rotation } = this.state;
+    const { position } = this.props;
     return (
       <mesh rotation={rotation} position={position} >
-        < boxGeometry width={3} height={3} depth={3} />
+        <boxGeometry width={3} height={3} depth={3} />
         <meshLambertMaterial color={0xF3FFE2} />
       </mesh>
     )
