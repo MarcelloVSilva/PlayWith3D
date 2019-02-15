@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Simple from './App';
-import Header from './header/Header';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
     <div>
-        {/* <Header /> */}
         <Simple />
     </div>, document.getElementById('root'));
 

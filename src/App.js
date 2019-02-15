@@ -13,8 +13,8 @@ class Simple extends React.Component {
       cameraPosition: new THREE.Vector3(40, 20, 10),
       width: window.innerWidth,
       height: window.innerHeight,
-      pause: false,
-      fov: 75
+      pause: true,
+      fov: 60
     };
 
     this._onAnimate = () => {
