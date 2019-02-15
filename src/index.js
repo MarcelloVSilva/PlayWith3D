@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
     <div>
-        {/* <Header /> */}
+        <Header />
         <Simple />
     </div>, document.getElementById('root'));
 
